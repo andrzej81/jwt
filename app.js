@@ -11,6 +11,26 @@ const api_version = "1.0.0";
 
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+const authorization = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    return res.sendStatus(403);
+  }
+  const token = authorization.split(" ")[1];
+  try {
+    const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.userId = data.id;
+    req.userRole = data.role;
+    return next();
+  } catch {
+    return res.sendStatus(403);
+  }
+};
+
+app.get("/", (req, res) => {
+  res.end(JSON.stringify("Hello API " + api_version));
+});
+
 app.post("/getToken", urlencodedParser, (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -29,7 +49,7 @@ app.post("/getToken", urlencodedParser, (req, res) => {
   );
 });
 
-app.get("/list_movies", (req, res) => {
+app.get("/list_movies", authorization, (req, res) => {
   fs.readFile(__dirname + "/" + "movies.json", "utf8", (err, data) => {
     if (err) {
       next(err);
@@ -37,10 +57,6 @@ app.get("/list_movies", (req, res) => {
       res.send(data);
     }
   });
-});
-
-app.get("/", (req, res) => {
-  res.end(JSON.stringify("Hello API " + api_version));
 });
 
 app.use((req, res, next) => {
