@@ -35,7 +35,11 @@ app.post("/getToken", urlencodedParser, (req, res) => {
 
 app.get("/list_movies", (req, res) => {
   fs.readFile(__dirname + "/" + "movies.json", "utf8", (err, data) => {
-    res.end(data);
+    if (err) {
+      next(err);
+    } else {
+      res.send(data);
+    }
   });
 });
 
