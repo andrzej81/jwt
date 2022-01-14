@@ -6,7 +6,7 @@
 ##node app.js to run API server
 
 - GET "/" to received message "Hello API"
-- POST "create new JWT token from json data {
+- POST "/getToken" to get JWT token from json data {
   "username" : "put your username",
   "password" : "put your password"
   }
