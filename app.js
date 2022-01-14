@@ -2,10 +2,12 @@ const jwt = require("jsonwebtoken");
 let express = require("express");
 let app = express();
 let dotenv = require("dotenv");
+let fs = require("fs");
 let bodyParser = require("body-parser");
 
 dotenv.config();
 const port = 3000;
+const api_version = "1.0.0";
 
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -34,5 +36,5 @@ app.get("/list_movies", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.end("Hello API");
+  res.end(JSON.stringify("Hello API " + api_version));
 });
