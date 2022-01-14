@@ -20,6 +20,8 @@ const authorization = (req, res, next) => {
   try {
     const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.userId = data.id;
+
+    //to do for role base auth
     req.userRole = data.role;
     return next();
   } catch {
