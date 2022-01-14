@@ -26,7 +26,11 @@ app.post("/getToken", urlencodedParser, (req, res) => {
     expiresIn: process.env.REFRESH_TOKEN_LIFE,
   });
 
-  res.send(JSON.stringify(accessToken));
+  res.send(
+    JSON.stringify({
+      token: accessToken,
+    })
+  );
 });
 
 app.get("/list_movies", (req, res) => {
