@@ -14,6 +14,9 @@ Need create env variable e.g (.env file or setup const in bitbucket pipeline or 
 
 API links:
 
-- GET "/" to received message "Hello API"
+- GET "/" to received message "Hello API" (no token auth, public available)
 - POST "/getToken" to get JWT token from json data `{ "username" : "your_username", "password" : "your_password" }`
 - GET /list_movies to received json data from server
+
+  (token auth is needed to access to the resources)
+  (write token into Authenication header)
