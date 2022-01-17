@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const request = require("request");
 let express = require("express");
 let app = express();
 let dotenv = require("dotenv");
@@ -57,6 +58,28 @@ app.get("/list_movies", authorization, (req, res) => {
       res.send(data);
     }
   });
+});
+
+app.get("/getJoke", /*authorization,*/ urlencodedParser, (req, res) => {
+  //get joke from https://api.chucknorris.io/jokes/random
+  let body = "";
+  request(
+    "https://api.chucknorris.io/jokes/random",
+    { json: true },
+    (err, res, body) => {
+      if (err) {
+        return console.log(err);
+      }
+      console.log(body.value);
+
+      //console.log(body.value);
+
+      //console.log(body.data);
+      //console.log(body.cena);
+    }
+  );
+  res.send(body);
+  //
 });
 
 app.use((req, res, next) => {
