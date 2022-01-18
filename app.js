@@ -1,94 +1,13 @@
-const jwt = require("jsonwebtoken");
-const request = require("request");
-let express = require("express");
-let app = express();
-let dotenv = require("dotenv");
-let fs = require("fs");
-let bodyParser = require("body-parser");
+const express = require("express");
+const checkBot = require("./middleware/checkBot");
 
-dotenv.config();
+const app = express();
 const port = 3000;
-const api_version = "1.0.0";
 
-let urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(checkBot);
 
-const authorization = (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    return res.sendStatus(403);
-  }
-  const token = authorization.split(" ")[1];
-  try {
-    const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    req.userId = data.id;
-    req.userRole = data.role;
-    return next();
-  } catch {
-    return res.sendStatus(403);
-  }
-};
+app.get("/", (req, res) => res.send("Hello to my lovely website!"));
 
-app.get("/", (req, res) => {
-  res.end(JSON.stringify("Hello API " + api_version));
-});
-
-app.post("/getToken", urlencodedParser, (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-
-  let payload = { username: password };
-
-  let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-    algorithm: "HS256",
-    expiresIn: process.env.REFRESH_TOKEN_LIFE,
-  });
-
-  res.send(
-    JSON.stringify({
-      token: accessToken,
-    })
-  );
-});
-
-app.get("/list_movies", authorization, (req, res) => {
-  fs.readFile(__dirname + "/" + "movies.json", "utf8", (err, data) => {
-    if (err) {
-      next(err);
-    } else {
-      res.send(data);
-    }
-  });
-});
-
-app.get("/getJoke", /*authorization,*/ urlencodedParser, (req, res) => {
-  //get joke from https://api.chucknorris.io/jokes/random
-  let body = "";
-  request(
-    "https://api.chucknorris.io/jokes/random",
-    { json: true },
-    (err, res, body) => {
-      if (err) {
-        return console.log(err);
-      }
-      console.log(body.value);
-
-      //console.log(body.value);
-
-      //console.log(body.data);
-      //console.log(body.cena);
-    }
-  );
-  res.send(body);
-  //
-});
-
-app.use((req, res, next) => {
-  res.status(404).send({
-    status: 404,
-    error: "Not found",
-  });
-});
-
-app.listen(port, () => {
-  console.log(`app listening at http://localhost:${port}`);
-});
+app.listen(port, () =>
+  console.log(`Server listening at http://localhost:${port}`)
+);
