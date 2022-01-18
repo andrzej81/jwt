@@ -5,12 +5,23 @@ let app = express();
 let dotenv = require("dotenv");
 let fs = require("fs");
 let bodyParser = require("body-parser");
+let cookieParser = require("cookie-parser");
 
 dotenv.config();
 const port = 3000;
 const api_version = "1.0.0";
 
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.use(cookieParser());
+app.get("/setcookie", function (req, res) {
+  res.cookie("my_cookie", "your_cookie");
+  res.send("Cookies added");
+});
+
+app.get("/getcookie", function (req, res) {
+  res.send(req.cookies);
+});
 
 const authorization = (req, res, next) => {
   const { authorization } = req.headers;
@@ -61,7 +72,6 @@ app.get("/list_movies", authorization, (req, res) => {
 });
 
 app.get("/getJoke", /*authorization,*/ urlencodedParser, (req, res) => {
-  //get joke from https://api.chucknorris.io/jokes/random
   let body = "";
   request(
     "https://api.chucknorris.io/jokes/random",
@@ -71,11 +81,6 @@ app.get("/getJoke", /*authorization,*/ urlencodedParser, (req, res) => {
         return console.log(err);
       }
       console.log(body.value);
-
-      //console.log(body.value);
-
-      //console.log(body.data);
-      //console.log(body.cena);
     }
   );
   res.send(body);
