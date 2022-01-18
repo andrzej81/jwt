@@ -28,13 +28,13 @@ app.get("/login", (req, res) => {
   }
 });
 
-/*app.post("/", (req, res) => {
+app.post("/", (req, res) => {
   const { name } = req.body;
   if (!name || name === undefined) {
     res.sendStatus(400);
   } else {
     res.json({ input: name });
   }
-});*/
+});
 
 module.exports = app;
