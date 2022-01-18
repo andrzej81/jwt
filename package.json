@@ -4,7 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrzej81/jwt.git"
   },
   "author": "Andrzej Iwaniuk",
   "license": "ISC",
@@ -14,5 +18,10 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.4",
+    "should": "^13.2.3",
+    "supertest": "^6.2.1"
   }
 }

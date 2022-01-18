@@ -1,10 +1,15 @@
-const express = require("express");
 const checkBot = require("./middleware/checkBot");
-
+const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
-const port = 3000;
 
-app.use(checkBot);
+app.use(checkBot); //to wykrzacza testy ale  serwer  sie uruchamia i bot analiza dziala
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get("/", (req, res) => {
+  res.json({ status: "OK" });
+});
 
 app.get("/login", (req, res) => {
   console.log("route /login");
@@ -23,13 +28,13 @@ app.get("/login", (req, res) => {
   }
 });
 
-app.use((req, res, next) => {
-  res.status(404).send({
-    status: 404,
-    error: "Not found",
-  });
-});
+/*app.post("/", (req, res) => {
+  const { name } = req.body;
+  if (!name || name === undefined) {
+    res.sendStatus(400);
+  } else {
+    res.json({ input: name });
+  }
+});*/
 
-app.listen(port, () =>
-  console.log(`Server listening at http://localhost:${port}`)
-);
+module.exports = app;
