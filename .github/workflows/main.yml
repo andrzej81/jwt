@@ -2,7 +2,9 @@ name: BOT APP CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - detects_bot
   pull_request:
     branches: [ master ]
 
