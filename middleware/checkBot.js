@@ -6,7 +6,7 @@ const listBotsPattern = new Map([
   ["PhantomJS", /PhantomJS/],
 ]);
 
-// analyse incoming reques by ise user-agent header field
+// analyse incoming request by ise user-agent header field
 function isKnownBotUserAgent(userAgent) {
   for (const [botName, botPattern] of listBotsPattern.entries()) {
     if (userAgent.match(botPattern)) {
