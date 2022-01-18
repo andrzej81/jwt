@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-app.use(checkBot); //to wykrzacza testy ale  serwer  sie uruchamia i bot analiza dziala
+//app.use(checkBot); //to wykrzacza testy ale  serwer  sie uruchamia i bot analiza dziala
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
